@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DriveSuccess Academy - Your Road to Excellence</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" th:href="@{/css/global.css}">
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/footer.css}">
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="container">
+    <div class="logo">
+      <img th:src="@{/images/logo.png}" alt="DriveSuccess Logo">
+      <h1>DriveSuccess<span>Academy</span></h1>
+    </div>
+    <div class="nav-toggle" id="navToggle">
+      <i class="fas fa-bars"></i>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <a th:href="@{/}" class="active">Home</a>
+      <a th:href="@{/courses}">Courses</a>
+      <a href="#">Instructors</a>
+      <a href="#">Testimonials</a>
+      <a th:href="@{/contact}">Contact</a>
+
+      <div class="auth-buttons">
+        <div th:if="${session.user}" class="user-menu" id="userMenu">
+          <button class="user-button">
+            <span class="user-initial" th:text="${#strings.substring(session.user.name, 0, 1)}">U</span>
+            <span class="user-name" th:text="${session.user.name}">User</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="dropdown-menu">
+            <a th:href="@{/profile}">
+              <i class="fas fa-user"></i> Profile
+            </a>
+            <a th:if="${session.user.role == 'student'}" th:href="@{/lessons/book}">
+              <i class="fas fa-calendar-plus"></i> Book Lesson
+            </a>
+            <a th:if="${session.user.role == 'instructor'}" th:href="@{/schedule}">
+              <i class="fas fa-calendar"></i> My Schedule
+            </a>
+            <a th:href="@{/logout}" class="logout">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </div>
+        </div>
+        <div th:unless="${session.user}">
+          <a th:href="@{/users/login}" class="btn btn-login">Login</a>
+          <a th:href="@{/users/register}" class="btn btn-register">Register</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section (for non-logged-in users) -->
+<section class="hero" th:unless="${session.user}">
+  <div class="container">
+    <div class="hero-content">
+      <h1>Start Your Journey to Becoming a Confident Driver</h1>
+      <p>Professional instructors, flexible scheduling, and personalized learning plans to help you succeed.</p>
+      <div class="hero-buttons">
+        <a th:href="@{/register}" class="btn btn-primary">Get Started</a>
+        <a href="#courses" class="btn btn-secondary">Explore Courses</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img th:src="@{/images/hero-driving.jpg}" alt="Driving Lesson">
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features" th:unless="${session.user}">
+  <div class="container">
+    <h2 class="section-title">Why Choose DriveSuccess Academy?</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-user-tie"></i>
+        </div>
+        <h3>Experienced Instructors</h3>
+        <p>Learn from certified professionals with years of teaching experience.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <h3>Flexible Scheduling</h3>
+        <p>Book lessons that fit your schedule with our easy online system.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-car"></i>
+        </div>
+        <h3>Modern Vehicles</h3>
+        <p>Practice in well-maintained, dual-control cars equipped with safety features.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-graduation-cap"></i>
+        </div>
+        <h3>High Pass Rates</h3>
+        <p>Our students enjoy above-average success on their driving tests.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Dashboard Section (for logged-in users) -->
+<section class="dashboard" th:if="${session.user}">
+  <div class="container">
+    <div class="dashboard-header">
+      <h2>Welcome to Your Dashboard</h2>
+      <p class="user-role"><span>Role:</span> <span th:text="${session.user.role}">role</span></p>
+    </div>
+
+    <!-- Student Dashboard -->
+    <div th:if="${session.user.role == 'student'}" class="dashboard-cards">
+      <div class="dashboard-card">
+        <div class="card-icon">
+          <i class="fas fa-id-card"></i>
+        </div>
+        <div class="card-content">
+          <h3>License Information</h3>
+          <p>License Type: <span th:text="${session.user.licenseType}">license</span></p>
+        </div>
+      </div>
+      <div class="dashboard-card">
+        <div class="card-icon">
+          <i class="fas fa-calendar-alt"></i>
+        </div>
+        <div class="card-content">
+          <h3>Upcoming Lessons</h3>
+          <p>You have no upcoming lessons</p>
+          <a th:href="@{/lessons/book}" class="btn btn-primary">Book a Lesson</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instructor Dashboard -->
+    <div th:if="${session.user.role == 'instructor'}" class="dashboard-cards">
+      <div class="dashboard-card">
+        <div class="card-icon">
+          <i class="fas fa-user-tie"></i>
+        </div>
+        <div class="card-content">
+          <h3>Instructor Profile</h3>
+          <p>Experience: <span th:text="${session.user.experienceYears}">0</span> years</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-column">
+        <div class="footer-logo">
+          <img th:src="@{/images/logo-footer.png}" alt="DriveSuccess Logo">
+          <h3>DriveSuccess<span>Academy</span></h3>
+        </div>
+        <p>We've been helping people become safe, confident drivers since 2005.</p>
+      </div>
+      <div class="footer-column">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a th:href="@{/}">Home</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a th:href="@{/courses}">Courses</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Contact Us</h3>
+        <ul class="contact-info">
+          <li><i class="fas fa-map-marker-alt"></i> 123 Driving Street, City, ST 12345</li>
+          <li><i class="fas fa-phone"></i> (555) 123-4567</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 DriveSuccess Academy. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+package com.drivingschool.driving_school_system.User.Service;
+
+import com.drivingschool.driving_school_system.User.Factory.UserFactory;
+import com.drivingschool.driving_school_system.User.Model.User;
+import com.drivingschool.driving_school_system.User.Repository.UserRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.UUID;
+
+@Service
+public class UserService {
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public User registerUser(String role, String name, String email, String password, Object roleSpecificData) {
+        String userId = UUID.randomUUID().toString();
+        User user = UserFactory.createUser(role, userId, name, email, password, roleSpecificData);
+        userRepository.save(user);
+        return user;
+    }
+
+
+
+    public User validateUser(String email, String password) {
+        return userRepository.findByEmail(email)
+                .filter(u -> u.getPassword().equals(hashPassword(password)))
+                .orElse(null);
+    }
+
+    private String hashPassword(String plainText) {
+        // Implement proper password hashing (e.g., BCrypt)
+        return plainText; // Temporary - replace with real hashing
+    }
+}

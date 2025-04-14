@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration - Driving School</title>
+  <link rel="stylesheet" th:href="@{/css/global.css}">
+  <link rel="stylesheet" th:href="@{/css/register.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<div class="registration-container">
+  <div class="registration-card">
+    <div class="registration-header">
+      <h2>Create Your Account</h2>
+      <p>Join our driving school community</p>
+
+      <div class="role-selection">
+        <button id="studentTab" class="role-tab active" data-role="student">
+          <i class="fas fa-user-graduate"></i> Student
+        </button>
+        <button id="instructorTab" class="role-tab" data-role="instructor">
+          <i class="fas fa-chalkboard-teacher"></i> Instructor
+        </button>
+      </div>
+    </div>
+
+    <div class="registration-body">
+      <!-- Student Registration Form -->
+      <form id="studentForm" th:action="@{/users/register/student}" method="post" class="registration-form active">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="licenseType">License Type</label>
+          <select id="licenseType" name="licenseType" class="form-control" required>
+            <option value="" selected disabled>Select License Type</option>
+            <option value="B">B - Passenger Cars</option>
+            <option value="A">A - Motorcycles</option>
+            <option value="C">C - Commercial Vehicles</option>
+            <option value="D">D - Buses</option>
+            <option value="E">E - Trailer Vehicles</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-submit student">
+          <i class="fas fa-user-plus"></i> Register as Student
+        </button>
+      </form>
+
+      <!-- Instructor Registration Form -->
+      <form id="instructorForm" th:action="@{/users/register/instructor}" method="post" class="registration-form">
+        <div class="form-group">
+          <label for="instructorName">Full Name</label>
+          <input type="text" id="instructorName" name="name" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="instructorEmail">Email Address</label>
+          <input type="email" id="instructorEmail" name="email" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="instructorPassword">Password</label>
+          <input type="password" id="instructorPassword" name="password" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="experienceYears">Years of Experience</label>
+          <input type="number" id="experienceYears" name="experienceYears" class="form-control" min="0" required>
+        </div>
+
+        <button type="submit" class="btn-submit instructor">
+          <i class="fas fa-user-plus"></i> Register as Instructor
+        </button>
+      </form>
+    </div>
+
+    <div class="registration-footer">
+      <p>Already have an account? <a th:href="@{/login}">Login here</a></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const studentTab = document.getElementById('studentTab');
+      const instructorTab = document.getElementById('instructorTab');
+      const studentForm = document.getElementById('studentForm');
+      const instructorForm = document.getElementById('instructorForm');
+
+      // Switch between student and instructor forms
+      studentTab.addEventListener('click', function() {
+          studentTab.classList.add('active');
+          instructorTab.classList.remove('active');
+          studentForm.classList.add('active');
+          instructorForm.classList.remove('active');
+      });
+
+      instructorTab.addEventListener('click', function() {
+          instructorTab.classList.add('active');
+          studentTab.classList.remove('active');
+          instructorForm.classList.add('active');
+          studentForm.classList.remove('active');
+      });
+  });
+</script>
+</body>
+</html>
