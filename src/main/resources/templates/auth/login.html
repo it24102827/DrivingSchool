@@ -7,6 +7,31 @@
     <link rel="stylesheet" th:href="@{/css/global.css}">
     <link rel="stylesheet" th:href="@{/css/login.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .error-message {
+            color: #d9534f;
+            margin-top: 5px;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        .form-group.error input {
+            border-color: #d9534f;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 <div class="login-container">
@@ -15,17 +40,21 @@
             <h3>Login to Driving School</h3>
         </div>
         <div class="login-body">
-            <div th:if="${param.error}" class="alert-danger">
-                <i class="fas fa-exclamation-circle"></i> Invalid email or password. Please try again.
+            <div id="errorAlert" th:class="${loginError != null ? 'alert-danger' : 'alert-danger hidden'}">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="errorMessage" th:text="${loginError != null ? loginError : 'Invalid email or password. Please try again.'}"></span>
             </div>
-            <form class="login-form" th:action="@{/users/login}" method="post">
+
+            <form class="login-form" th:action="@{/users/login}" method="post" id="loginForm" novalidate>
                 <div class="form-group">
                     <label for="email">Email Address</label>
                     <input type="email" class="form-control" id="email" name="email" required>
+                    <div class="error-message" id="emailError">Please enter a valid email address</div>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" class="form-control" id="password" name="password" required>
+                    <div class="error-message" id="passwordError">Password is required</div>
                 </div>
                 <button type="submit" class="login-btn">
                     <i class="fas fa-sign-in-alt"></i> Login
@@ -35,15 +64,109 @@
         <div class="login-footer">
             <p>Don't have an account yet? Register as:</p>
             <div class="register-options">
-                <a th:href="@{/users/register/student}" class="register-btn student">
-                    <i class="fas fa-user-graduate"></i> Student
-                </a>
-                <a th:href="@{/users/register/instructor}" class="register-btn instructor">
-                    <i class="fas fa-chalkboard-teacher"></i> Instructor
+                <a th:href="@{/users/register}" class="register-btn student">
+                    <i class="fas fa-user-graduate"></i> Register
                 </a>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const loginForm = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+        const errorAlert = document.getElementById('errorAlert');
+
+        // Function to validate email format
+        function isValidEmail(email) {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return regex.test(email);
+        }
+
+        // Function to validate a form field
+        function validateField(input, errorElement, validationFn, errorMessage) {
+            const isValid = validationFn(input.value);
+
+            if (!isValid) {
+                input.parentElement.classList.add('error');
+                errorElement.style.display = 'block';
+                errorElement.textContent = errorMessage;
+                return false;
+            } else {
+                input.parentElement.classList.remove('error');
+                errorElement.style.display = 'none';
+                return true;
+            }
+        }
+
+        // Add validation on form submission
+        loginForm.addEventListener('submit', function(event) {
+
+            errorAlert.classList.add('hidden');
+
+            // Validate email
+            const isEmailValid = validateField(
+                emailInput,
+                emailError,
+                (value) => value.trim() !== '' && isValidEmail(value),
+                'Please enter a valid email address'
+            );
+
+            // Validate password
+            const isPasswordValid = validateField(
+                passwordInput,
+                passwordError,
+                (value) => value.trim() !== '',
+                'Password is required'
+            );
+
+            // If any validation fails, prevent form submission
+            if (!isEmailValid || !isPasswordValid) {
+                event.preventDefault();
+                return false;
+            }
+
+
+        });
+
+        // Add validation on input blur
+        emailInput.addEventListener('blur', function() {
+            validateField(
+                emailInput,
+                emailError,
+                (value) => value.trim() === '' || isValidEmail(value),
+                'Please enter a valid email address'
+            );
+        });
+
+        passwordInput.addEventListener('blur', function() {
+            validateField(
+                passwordInput,
+                passwordError,
+                (value) => true,
+                ''
+            );
+        });
+
+        // Add input event listeners to hide error messages when user starts typing
+        emailInput.addEventListener('input', function() {
+            if (emailInput.parentElement.classList.contains('error')) {
+                emailInput.parentElement.classList.remove('error');
+                emailError.style.display = 'none';
+            }
+        });
+
+        passwordInput.addEventListener('input', function() {
+            if (passwordInput.parentElement.classList.contains('error')) {
+                passwordInput.parentElement.classList.remove('error');
+                passwordError.style.display = 'none';
+            }
+        });
+    });
+</script>
 </body>
 </html>

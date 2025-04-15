@@ -8,6 +8,9 @@ import java.util.Optional;
 
 public interface UserRepository {
     void save(User user);
+    void update(User user);
+    void deleteByEmail(String email);
+
     Optional<User> findByEmail(String email);
     List<User> findAll();
     // Add other methods as needed

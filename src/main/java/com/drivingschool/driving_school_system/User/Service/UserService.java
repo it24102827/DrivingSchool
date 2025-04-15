@@ -22,6 +22,15 @@ public class UserService {
         return user;
     }
 
+    public void updateUser(User updatedUser) {
+        userRepository.update(updatedUser);
+    }
+
+    public void deleteUser(String email) {
+        userRepository.deleteByEmail(email);
+    }
+
+
 
 
     public User validateUser(String email, String password) {

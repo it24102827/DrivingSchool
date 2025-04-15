@@ -44,7 +44,7 @@
             <a th:if="${session.user.role == 'instructor'}" th:href="@{/schedule}">
               <i class="fas fa-calendar"></i> My Schedule
             </a>
-            <a th:href="@{/logout}" class="logout">
+            <a th:href="@{/users/logout}" class="logout">
               <i class="fas fa-sign-out-alt"></i> Logout
             </a>
           </div>

@@ -45,6 +45,39 @@ public class UserRepositoryImpl implements UserRepository {
         return users;
     }
 
+    @Override
+    public void update(User updatedUser) {
+        List<User> users = findAll().stream()
+                .map(user -> user.getEmail().equalsIgnoreCase(updatedUser.getEmail()) ? updatedUser : user)
+                .collect(Collectors.toList());
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USERS_FILE))) {
+            for (User user : users) {
+                writer.write(serializeUser(user));
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteByEmail(String email) {
+        List<User> users = findAll().stream()
+                .filter(user -> !user.getEmail().equalsIgnoreCase(email))
+                .collect(Collectors.toList());
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USERS_FILE))) {
+            for (User user : users) {
+                writer.write(serializeUser(user));
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private String serializeUser(User user) {
         String base = String.join(",",
                 user.getId(),
