@@ -1,0 +1,153 @@
+/* login.css - Custom login page styles */
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #e67e22;
+    --accent-color: #3498db;
+    --success-color: #27ae60;
+    --danger-color: #e74c3c;
+    --gray-color: #95a5a6;
+    --transition: all 0.3s ease;
+}
+
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+    background-color: #f8f9fa;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 500px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.login-header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.login-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.login-body {
+    padding: 30px;
+}
+
+.login-form .form-group {
+    margin-bottom: 20px;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.login-form .form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.login-form .form-control:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.login-btn:hover {
+    background-color: #1a252f;
+}
+
+.login-footer {
+    padding: 20px;
+    text-align: center;
+    border-top: 1px solid #eee;
+}
+
+.login-footer p {
+    margin-bottom: 15px;
+    color: var(--gray-color);
+}
+
+.register-options {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.register-btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: var(--transition);
+    text-decoration: none;
+    display: inline-block;
+}
+
+.register-btn.student {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.register-btn.instructor {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.register-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.alert-danger {
+    background-color: #fdecea;
+    color: var(--danger-color);
+    padding: 12px 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--danger-color);
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .login-card {
+        margin: 0 15px;
+    }
+
+    .register-options {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .register-btn {
+        width: 100%;
+    }
+}
