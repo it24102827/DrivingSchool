@@ -1,19 +1,25 @@
 package com.drivingschool.driving_school_system.User.Controller;
 
-
 import com.drivingschool.driving_school_system.User.Factory.UserFactory;
 import com.drivingschool.driving_school_system.User.Model.User;
 import com.drivingschool.driving_school_system.User.Service.UserService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
+    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -65,7 +71,6 @@ public class UserController {
             return "redirect:/";
         }
 
-        // Instead of redirecting, add error message to model and return the login page
         model.addAttribute("loginError", "Invalid email or password. Please try again.");
         return "auth/login";
     }
@@ -80,7 +85,8 @@ public class UserController {
             HttpSession session) {
 
         User currentUser = (User) session.getAttribute("user");
-        if (currentUser == null) return "redirect:/login";
+        if (currentUser == null)
+            return "redirect:/login";
 
         // Preserve existing password if new one isn't provided
         String updatedPassword = (password == null || password.isEmpty())
@@ -98,8 +104,7 @@ public class UserController {
                 name,
                 email,
                 updatedPassword,
-                roleSpecificData
-        );
+                roleSpecificData);
 
         userService.updateUser(updatedUser);
         session.setAttribute("user", updatedUser);
@@ -107,11 +112,10 @@ public class UserController {
         return "redirect:/profile";
     }
 
-
     @PostMapping("/delete")
     public String deleteUser(@RequestParam String email, HttpSession session) {
         userService.deleteUser(email);
-        session.invalidate(); // logout the user if it’s themselves
+        session.invalidate();
         return "redirect:/";
     }
 
@@ -122,4 +126,10 @@ public class UserController {
         return "redirect:login";
     }
 
+    @GetMapping("/instructors")
+    public String getInstructorsSortedByExperience(Model model) {
+        List<User> instructors = userService.findInstructorsSortedByExperience();
+        model.addAttribute("instructors", instructors);
+        return "instructors/list";
+    }
 }

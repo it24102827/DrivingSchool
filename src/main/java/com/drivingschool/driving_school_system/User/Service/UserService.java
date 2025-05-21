@@ -5,6 +5,7 @@ import com.drivingschool.driving_school_system.User.Model.User;
 import com.drivingschool.driving_school_system.User.Repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -30,17 +31,18 @@ public class UserService {
         userRepository.deleteByEmail(email);
     }
 
-
-
-
     public User validateUser(String email, String password) {
         return userRepository.findByEmail(email)
                 .filter(u -> u.getPassword().equals(hashPassword(password)))
                 .orElse(null);
     }
 
+    public List<User> findInstructorsSortedByExperience() {
+        return userRepository.findInstructors();
+    }
+
     private String hashPassword(String plainText) {
-        // Implement proper password hashing (e.g., BCrypt)
-        return plainText; // Temporary - replace with real hashing
+       
+        return plainText; 
     }
 }
