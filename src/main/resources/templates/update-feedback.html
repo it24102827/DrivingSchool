@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Feedback - DriveSuccess Academy</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
+    <link rel="stylesheet" th:href="@{/css/feedback.css}" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container">
+        <div class="logo">
+          <img th:src="@{/images/logo.png}" alt="DriveSuccess Logo" />
+          <h1>DriveSuccess<span>Academy</span></h1>
+        </div>
+        <div class="nav-toggle" id="navToggle">
+          <i class="fas fa-bars"></i>
+        </div>
+        <div class="nav-links" id="navLinks">
+          <a th:href="@{/}" class="active">Home</a>
+          <a th:href="@{/lessons/student}">Courses</a>
+          <a href="#">Instructors</a>
+          <a href="/feedback">Testimonials</a>
+          <a th:href="@{/contact}">Contact</a>
+
+          <div class="auth-buttons">
+            <div th:if="${session.user}" class="user-menu" id="userMenu">
+              <button class="user-button">
+                <span
+                  class="user-initial"
+                  th:text="${#strings.substring(session.user.name, 0, 1)}"
+                  >U</span
+                >
+                <span class="user-name" th:text="${session.user.name}"
+                  >User</span
+                >
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="dropdown-menu">
+                <a th:href="@{/profile}">
+                  <i class="fas fa-user"></i> Profile
+                </a>
+                <a
+                  th:if="${session.user.role == 'student'}"
+                  th:href="@{/lessons/student}"
+                >
+                  <i class="fas fa-calendar-plus"></i> Book Lesson
+                </a>
+                <a
+                  th:if="${session.user.role == 'student'}"
+                  th:href="@{/schedules/my}"
+                >
+                  <i class="fas fa-calendar-check"></i> My Bookings
+                </a>
+                <a
+                  th:if="${session.user.role == 'instructor'}"
+                  th:href="@{/schedule}"
+                >
+                  <i class="fas fa-calendar"></i> My Schedule
+                </a>
+                <a th:href="@{/feedback/my}" class="active">
+                  <i class="fas fa-comment-dots"></i> My Feedbacks
+                </a>
+                <a th:href="@{/users/logout}" class="logout">
+                  <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+              </div>
+            </div>
+            <div th:unless="${session.user}">
+              <a th:href="@{/users/login}" class="btn btn-login">Login</a>
+              <a th:href="@{/users/register}" class="btn btn-register"
+                >Register</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container form-container">
+      <h2>Update Your Feedback</h2>
+
+      <form action="/feedback/update" method="post">
+        <input type="hidden" name="feedbackId" th:value="${feedback.id}" />
+
+        <div class="form-group">
+          <label for="submittedByName">Name:</label>
+          <input
+            type="text"
+            id="submittedByName"
+            name="submittedByName"
+            th:value="${feedback.submittedByName}"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <input
+            type="hidden"
+            id="submittedById"
+            name="submittedById"
+            th:value="${feedback.submittedById}"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="feedbackText">Feedback:</label>
+          <textarea
+            id="feedbackText"
+            name="feedbackText"
+            required
+            th:text="${feedback.feedbackText}"
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Rating (Optional):</label>
+          <div class="rating-container">
+            <input
+              type="radio"
+              id="star5"
+              name="rating"
+              value="5"
+              th:checked="${feedback.rating == 5}"
+            />
+            <label for="star5" title="5 stars">★</label>
+            <input
+              type="radio"
+              id="star4"
+              name="rating"
+              value="4"
+              th:checked="${feedback.rating == 4}"
+            />
+            <label for="star4" title="4 stars">★</label>
+            <input
+              type="radio"
+              id="star3"
+              name="rating"
+              value="3"
+              th:checked="${feedback.rating == 3}"
+            />
+            <label for="star3" title="3 stars">★</label>
+            <input
+              type="radio"
+              id="star2"
+              name="rating"
+              value="2"
+              th:checked="${feedback.rating == 2}"
+            />
+            <label for="star2" title="2 stars">★</label>
+            <input
+              type="radio"
+              id="star1"
+              name="rating"
+              value="1"
+              th:checked="${feedback.rating == 1}"
+            />
+            <label for="star1" title="1 star">★</label>
+            <span class="rating-text">Not Rated</span>
+          </div>
+          <input type="hidden" name="rating" value="0" id="rating-value" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Feedback</button>
+      </form>
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-column">
+            <div class="footer-logo">
+              <img th:src="@{/images/logo.png}" alt="DriveSuccess Logo" />
+              <h3>DriveSuccess<span>Academy</span></h3>
+            </div>
+            <p>
+              We've been helping people become safe, confident drivers since
+              2005.
+            </p>
+          </div>
+          <div class="footer-column">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a th:href="@{/}">Home</a></li>
+              <li><a href="#">About Us</a></li>
+              <li><a th:href="@{/courses}">Courses</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h3>Contact Us</h3>
+            <ul class="contact-info">
+              <li>
+                <i class="fas fa-map-marker-alt"></i> 123 Driving Street, City,
+                ST 12345
+              </li>
+              <li><i class="fas fa-phone"></i> (555) 123-4567</li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 DriveSuccess Academy. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script th:src="@{/js/script.js}"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const ratingContainer = document.querySelector(".rating-container");
+        const ratingInputs = document.querySelectorAll(
+          '.rating-container input[type="radio"]'
+        );
+        const ratingValue = document.getElementById("rating-value");
+        const ratingText = document.querySelector(".rating-text");
+
+        ratingInputs.forEach((input) => {
+          input.addEventListener("change", function () {
+            ratingValue.value = this.value;
+            updateRatingText(this.value);
+          });
+        });
+
+        function updateRatingText(value) {
+          const texts = {
+            0: "Not Rated",
+            1: "1 Star - Poor",
+            2: "2 Stars - Fair",
+            3: "3 Stars - Good",
+            4: "4 Stars - Very Good",
+            5: "5 Stars - Excellent",
+          };
+          ratingText.textContent = texts[value];
+        }
+
+        // Initialize with default value
+        updateRatingText(ratingValue.value);
+      });
+    </script>
+  </body>
+</html>

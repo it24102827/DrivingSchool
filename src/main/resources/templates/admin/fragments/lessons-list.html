@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <div th:fragment="lessons-section">
+      <div class="section-header">
+        <h2>Lesson Management</h2>
+        <p>Manage all your driving school lessons</p>
+        <button
+          class="create-btn create-btn-lesson"
+          onclick="openLessonModal()"
+        >
+          <i class="fa fa-book"></i> Create New Lesson
+        </button>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Instructor</th>
+              <th>Lesson Name</th>
+              <th>Type</th>
+              <th>Description</th>
+              <th>Duration</th>
+              <th>Created At</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="lesson : ${lessons}">
+              <td th:text="${lesson.id}">001</td>
+              <td th:text="${lesson.instructorName}">John Doe</td>
+              <td th:text="${lesson.lessonName}">Basic Driving Course</td>
+              <td th:text="${lesson.lessonType}">Theory</td>
+              <td th:text="${lesson.description}">Basic driving rules</td>
+              <td th:text="${lesson.duration + ' min'}">60 min</td>
+              <td
+                th:text="${#temporals.format(lesson.createdAt, 'MMM dd, yyyy')}"
+              >
+                Mar 15, 2025
+              </td>
+              <td>
+                <button
+                  class="action-btn edit-lesson-btn"
+                  th:data-id="${lesson.id}"
+                  th:data-instructor-id="${lesson.instructorId}"
+                  th:data-instructor-name="${lesson.instructorName}"
+                  th:data-lesson-name="${lesson.lessonName}"
+                  th:data-lesson-type="${lesson.lessonType}"
+                  th:data-description="${lesson.description}"
+                  th:data-duration="${lesson.duration}"
+                >
+                  Edit
+                </button>
+                <a
+                  th:href="@{/lessons/delete/{id}(id=${lesson.id})}"
+                  class="action-btn danger-btn"
+                  onclick="return confirm('Are you sure you want to delete this lesson?')"
+                >
+                  Delete
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

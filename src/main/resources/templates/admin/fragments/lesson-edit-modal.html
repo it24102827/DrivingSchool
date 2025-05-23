@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <!-- Edit Lesson Modal -->
+    <div th:fragment="lesson-edit-modal" class="modal" id="lessonEditModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Edit Lesson</h2>
+          <span class="close-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+          <form
+            id="editLessonForm"
+            th:action="@{/lessons/update}"
+            method="post"
+          >
+            <!-- Hidden ID field -->
+            <input type="hidden" id="editLessonId" name="id" />
+
+            <div class="form-group">
+              <label for="editInstructor">Select Instructor</label>
+              <select
+                id="editInstructor"
+                name="instructorId"
+                required
+                onchange="updateEditInstructorName()"
+              >
+                <option value="">Choose an instructor...</option>
+                <th:block th:each="instructor : ${instructors}">
+                  <option
+                    th:value="${instructor.id}"
+                    th:text="${instructor.name}"
+                    th:data-name="${instructor.name}"
+                  ></option>
+                </th:block>
+              </select>
+            </div>
+            <input
+              type="hidden"
+              id="editInstructorName"
+              name="instructorName"
+            />
+
+            <div class="form-group">
+              <label for="editLessonName">Lesson Name</label>
+              <input
+                type="text"
+                id="editLessonName"
+                name="lessonName"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="editLessonType">Lesson Type</label>
+              <select id="editLessonType" name="lessonType" required>
+                <option value="Theory">Theory</option>
+                <option value="Practical">Practical</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="editLessonDescription">Description</label>
+              <textarea
+                id="editLessonDescription"
+                name="description"
+                required
+                rows="4"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="editLessonDuration">Duration (minutes)</label>
+              <input
+                type="number"
+                id="editLessonDuration"
+                name="duration"
+                required
+                min="30"
+                step="30"
+              />
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="cancel-btn">Cancel</button>
+              <button type="submit" class="submit-btn">Update Lesson</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <script>
+        function updateEditInstructorName() {
+          const select = document.getElementById("editInstructor");
+          const selectedOption = select.options[select.selectedIndex];
+          const instructorNameInput =
+            document.getElementById("editInstructorName");
+          instructorNameInput.value = selectedOption.getAttribute("data-name");
+        }
+
+        // Function to preselect the current instructor
+        function presetInstructor(instructorId, instructorName) {
+          const select = document.getElementById("editInstructor");
+          const hiddenNameField = document.getElementById("editInstructorName");
+
+          if (select && hiddenNameField) {
+            // Set the dropdown value
+            select.value = instructorId;
+
+            // Set the hidden name field
+            hiddenNameField.value = instructorName;
+
+            // Update the data-name attribute of the selected option
+            const selectedOption = select.options[select.selectedIndex];
+            if (selectedOption) {
+              selectedOption.setAttribute("data-name", instructorName);
+            }
+          }
+        }
+      </script>
+    </div>
+  </body>
+</html>

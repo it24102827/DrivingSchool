@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Edit Admin Modal -->
+<div th:fragment="admin-edit-modal" class="modal" id="adminEditModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Edit Admin</h2>
+      <span class="close-modal">&times;</span>
+    </div>
+    <div class="modal-body">
+      <form id="editAdminForm" th:action="@{/admins/update}" method="post">
+        <!-- Hidden input for admin ID -->
+        <input type="hidden" id="editId" name="id">
+
+        <div class="form-group">
+          <label for="editName">Name</label>
+          <input type="text" id="editName" name="name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="editEmail">Email</label>
+          <input type="email" id="editEmail" name="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="editPassword">New Password (leave blank to keep current)</label>
+          <input type="password" id="editPassword" name="password">
+        </div>
+
+        <div class="form-group">
+          <label for="editConfirmPassword">Confirm New Password</label>
+          <input type="password" id="editConfirmPassword">
+          <div class="error-message" style="display: none;">Passwords do not match</div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="cancel-btn">Cancel</button>
+          <button type="submit" class="submit-btn">Update Admin</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>

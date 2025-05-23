@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Registration - Driving School</title>
+  <link rel="stylesheet" th:href="@{/css/admin-register.css}">
+</head>
+<body>
+<div class="register-container">
+  <div class="register-box">
+    <h2>Admin Registration</h2>
+
+    <div th:if="${registerError}" class="error-message">
+      <p th:text="${registerError}">Error occurred while registering.</p>
+    </div>
+
+    <form th:action="@{/admins/register}" method="post">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required>
+      </div>
+
+      <button type="submit">Register</button>
+    </form>
+
+    <p class="login-link">Already have an account?
+      <a th:href="@{/admin/login}">Login here</a>
+    </p>
+  </div>
+</div>
+</body>
+</html>

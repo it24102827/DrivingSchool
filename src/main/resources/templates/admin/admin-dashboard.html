@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" th:href="@{/css/admin-dashboard.css}" />
+    <link rel="stylesheet" th:href="@{/css/modal.css}" />
+    <title>Admin Dashboard - Driving School</title>
+  </head>
+  <body>
+    <div th:if="${successMessage}" class="alert alert-success">
+      <span th:text="${successMessage}"></span>
+      <span class="close-alert">&times;</span>
+    </div>
+    <div class="dashboard-container">
+      <!-- Sidebar Navigation -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <h2>Driving School</h2>
+        </div>
+
+        <div class="sidebar-menu">
+          <div class="menu-item active" data-section="dashboard">
+            <i class="fa fa-dashboard"></i>
+            <span class="menu-text">Dashboard</span>
+          </div>
+
+          <div class="menu-item" data-section="admins">
+            <i class="fa fa-user-shield"></i>
+            <span class="menu-text">Admins</span>
+          </div>
+
+          <div class="menu-item" data-section="lessons">
+            <i class="fa fa-book"></i>
+            <span class="menu-text">Lessons</span>
+          </div>
+        </div>
+
+        <div class="sidebar-footer">
+          <a
+            th:href="@{/admins/logout}"
+            class="logout-btn"
+            onclick="return confirm('Are you sure you want to logout?')"
+          >
+            <i class="fa fa-sign-out"></i>
+            <span>Logout</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="main-content">
+        <div class="header">
+          <div class="user-welcome">
+            <div class="avatar">A</div>
+            <div>
+              <h2>
+                Welcome, <span th:text="${session.admin.name}">Admin</span>
+              </h2>
+              <p>
+                Today is
+                <span
+                  th:text="${#dates.format(#dates.createNow(), 'MMMM dd, yyyy')}"
+                  >April 16, 2025</span
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div class="dashboard-section active" id="dashboard">
+          <div class="section-header">
+            <h2>Dashboard Overview</h2>
+            <p>Here's what's happening at your driving school</p>
+          </div>
+
+          <div class="cards-container">
+            <div class="card">
+              <div class="card-icon">
+                <i class="fa fa-user-shield"></i>
+              </div>
+              <h3>Active Admins</h3>
+              <div class="stat-number">8</div>
+              <p>2 new this month</p>
+            </div>
+
+            <div class="card">
+              <div class="card-icon">
+                <i class="fa fa-book"></i>
+              </div>
+              <h3>Total Lessons</h3>
+              <div class="stat-number">42</div>
+              <p>5 new this week</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admins Section -->
+        <div class="dashboard-section" id="admins">
+          <div
+            th:replace="~{admin/fragments/admins-list :: admins-section}"
+          ></div>
+        </div>
+
+        <!-- Lessons Section -->
+        <div class="dashboard-section" id="lessons">
+          <div
+            th:replace="~{admin/fragments/lessons-list :: lessons-section}"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Include modals -->
+    <div
+      th:replace="~{admin/fragments/admin-create-modal :: admin-create-modal}"
+    ></div>
+    <div
+      th:replace="~{admin/fragments/admin-edit-modal :: admin-edit-modal}"
+    ></div>
+    <div
+      th:replace="~{admin/fragments/lesson-create-modal :: lesson-create-modal}"
+    ></div>
+   
+    <div
+      th:replace="~{admin/fragments/lesson-edit-modal :: lesson-edit-modal}"
+    ></div>
+
+    <style>
+      /* Added styles for section visibility */
+      .alert {
+        padding: 12px 20px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .close-alert {
+        font-size: 20px;
+        font-weight: bold;
+        color: inherit;
+        cursor: pointer;
+        transition: opacity 0.3s;
+      }
+
+      .close-alert:hover {
+        opacity: 0.7;
+      }
+      .dashboard-section {
+        display: none;
+      }
+
+      .dashboard-section.active {
+        display: block;
+      }
+
+      /* Additional CSS for create buttons */
+      .create-btn {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 10px;
+        transition: background-color 0.3s;
+      }
+
+      .create-btn:hover {
+        background-color: #388e3c;
+      }
+
+      .section-header {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .section-header h2 {
+        margin-bottom: 5px;
+      }
+
+      .section-header p {
+        margin-top: 0;
+        margin-bottom: 15px;
+      }
+    </style>
+    <script th:src="@{/js/admin-script.js}"></script>
+    <script th:src="@{/js/lesson-modal.js}"></script>
+    {% comment %}
+    <script th:src="@{/js/lesson-edit-modal.js}"></script>
+    {% endcomment %}
+    <script>
+      console.log("INLINE SCRIPT WORKING");
+      document.addEventListener("DOMContentLoaded", function () {
+        console.log("Edit modal script loaded");
+
+        const modal = document.getElementById("lessonEditModal");
+        const form = document.getElementById("editLessonForm");
+
+        if (!modal || !form) {
+          console.error("Modal or form element not found!");
+          return;
+        }
+
+        // Handle edit button clicks
+        document.addEventListener("click", function (e) {
+          if (e.target.classList.contains("edit-lesson-btn")) {
+            console.log("Edit button clicked");
+
+            // Get lesson data from data attributes
+            const lessonData = {
+              id: e.target.getAttribute("data-id"),
+              instructorId: e.target.getAttribute("data-instructor-id"),
+              instructorName: e.target.getAttribute("data-instructor-name"),
+              lessonName: e.target.getAttribute("data-lesson-name"),
+              lessonType: e.target.getAttribute("data-lesson-type"),
+              description: e.target.getAttribute("data-description"),
+              duration: e.target.getAttribute("data-duration"),
+            };
+
+            console.log("Lesson data:", lessonData);
+
+            // Populate form 
+            form.querySelector("[name=id]").value = lessonData.id;
+            form.querySelector("[name=instructorId]").value =
+              lessonData.instructorId;
+            form.querySelector("[name=instructorName]").value =
+              lessonData.instructorName;
+            form.querySelector("[name=lessonName]").value =
+              lessonData.lessonName;
+            form.querySelector("[name=lessonType]").value =
+              lessonData.lessonType;
+            form.querySelector("[name=description]").value =
+              lessonData.description;
+            form.querySelector("[name=duration]").value = lessonData.duration;
+
+            modal.style.display = "block";
+          }
+
+          // Close modal
+          if (
+            e.target.classList.contains("close-modal") ||
+            e.target.classList.contains("cancel-btn") ||
+            e.target === modal
+          ) {
+            modal.style.display = "none";
+          }
+        });
+
+        // Handle form submission
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          console.log("Form submitted");
+          
+          this.submit();
+        });
+      });
+    </script>
+  </body>
+</html>
