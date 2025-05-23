@@ -1,0 +1,171 @@
+/* Registration Page Styles */
+.registration-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background-color: #f8f9fa;
+}
+
+.registration-card {
+    width: 100%;
+    max-width: 600px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.registration-header {
+    padding: 30px;
+    text-align: center;
+    background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+    color: white;
+}
+
+.registration-header h2 {
+    margin: 0 0 10px;
+    font-size: 1.8rem;
+}
+
+.registration-header p {
+    margin: 0;
+    opacity: 0.9;
+}
+
+.role-selection {
+    display: flex;
+    margin-top: 25px;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.role-tab {
+    flex: 1;
+    padding: 12px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.role-tab.active {
+    background-color: white;
+    color: var(--primary-color);
+}
+
+.role-tab i {
+    font-size: 1.1rem;
+}
+
+.registration-body {
+    padding: 30px;
+}
+
+.registration-form {
+    display: none;
+}
+
+.registration-form.active {
+    display: block;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 1em;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-submit.student {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.btn-submit.instructor {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.btn-submit:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.registration-footer {
+    padding: 20px;
+    text-align: center;
+    border-top: 1px solid #eee;
+    color: var(--gray-color);
+}
+
+.registration-footer a {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .registration-card {
+        margin: 0 15px;
+    }
+
+    .role-selection {
+        flex-direction: column;
+    }
+
+    .role-tab {
+        padding: 10px;
+    }
+}
