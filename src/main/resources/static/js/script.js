@@ -120,5 +120,5 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Removed complex animation observers
+    
 });

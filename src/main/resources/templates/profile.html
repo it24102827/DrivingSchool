@@ -1,237 +1,363 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Your Profile - DriveSuccess Academy</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/css/global.css}">
-    <link rel="stylesheet" th:href="@{/css/header.css}">
-    <link rel="stylesheet" th:href="@{/css/footer.css}">
-    <link rel="stylesheet" th:href="@{/css/profile.css}">
-</head>
-<body>
-<!-- Navigation Bar -->
-<nav class="navbar">
-    <div class="container">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
+    <link rel="stylesheet" th:href="@{/css/profile.css}" />
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+      <div class="container">
         <div class="logo">
-            <img th:src="@{/images/logo.png}" alt="DriveSuccess Logo">
-            <h1>DriveSuccess<span>Academy</span></h1>
+          <img th:src="@{/images/logo.png}" alt="DriveSuccess Logo" />
+          <h1>DriveSuccess<span>Academy</span></h1>
         </div>
         <div class="nav-toggle" id="navToggle">
-            <i class="fas fa-bars"></i>
+          <i class="fas fa-bars"></i>
         </div>
         <div class="nav-links" id="navLinks">
-            <a th:href="@{/}">Home</a>
-            <a th:href="@{/courses}">Courses</a>
-            <a href="#">Instructors</a>
-            <a href="#">Testimonials</a>
-            <a th:href="@{/contact}">Contact</a>
+          <a th:href="@{/}" class="active">Home</a>
+          <a th:href="@{/lessons/student}">Courses</a>
+          <a href="#">Instructors</a>
+          <a href="/feedback">Testimonials</a>
+          <a th:href="@{/contact}">Contact</a>
 
-            <div class="auth-buttons">
-                <div th:if="${session.user}" class="user-menu" id="userMenu">
-                    <button class="user-button">
-                        <span class="user-initial" th:text="${#strings.substring(session.user.name, 0, 1)}">U</span>
-                        <span class="user-name" th:text="${session.user.name}">User</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a th:href="@{/profile}" class="active">
-                            <i class="fas fa-user"></i> Profile
-                        </a>
-                        <a th:if="${session.user.role == 'student'}" th:href="@{/lessons/book}">
-                            <i class="fas fa-calendar-plus"></i> Book Lesson
-                        </a>
-                        <a th:if="${session.user.role == 'instructor'}" th:href="@{/schedule}">
-                            <i class="fas fa-calendar"></i> My Schedule
-                        </a>
-                        <a th:href="@{/logout}" class="logout">
-                            <i class="fas fa-sign-out-alt"></i> Logout
-                        </a>
-                    </div>
-                </div>
-                <div th:unless="${session.user}">
-                    <a th:href="@{/users/login}" class="btn btn-login">Login</a>
-                    <a th:href="@{/users/register}" class="btn btn-register">Register</a>
-                </div>
+          <div class="auth-buttons">
+            <div th:if="${session.user}" class="user-menu" id="userMenu">
+              <button class="user-button">
+                <span
+                  class="user-initial"
+                  th:text="${#strings.substring(session.user.name, 0, 1)}"
+                  >U</span
+                >
+                <span class="user-name" th:text="${session.user.name}"
+                  >User</span
+                >
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="dropdown-menu">
+                <a th:href="@{/profile}">
+                  <i class="fas fa-user"></i> Profile
+                </a>
+                <a
+                  th:if="${session.user.role == 'student'}"
+                  th:href="@{/lessons/student}"
+                >
+                  <i class="fas fa-calendar-plus"></i> Book Lesson
+                </a>
+                <a
+                  th:if="${session.user.role == 'student'}"
+                  th:href="@{/schedules/my}"
+                >
+                  <i class="fas fa-calendar-check"></i> My Bookings
+                </a>
+                <a
+                  th:if="${session.user.role == 'instructor'}"
+                  th:href="@{/schedules/my}"
+                >
+                  <i class="fas fa-calendar"></i> My Schedule
+                </a>
+                <a th:href="@{/feedback/my}" class="active">
+                  <i class="fas fa-comment-dots"></i> My Feedbacks
+                </a>
+                <a th:href="@{/users/logout}" class="logout">
+                  <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+              </div>
             </div>
+            <div th:unless="${session.user}">
+              <a th:href="@{/users/login}" class="btn btn-login">Login</a>
+              <a th:href="@{/users/register}" class="btn btn-register"
+                >Register</a
+              >
+            </div>
+          </div>
         </div>
-    </div>
-</nav>
+      </div>
+    </nav>
 
-<!-- Profile Section -->
-<section class="profile-section">
-    <div class="container">
+    <!-- Profile Section -->
+    <section class="profile-section">
+      <div class="container">
         <div class="profile-header">
-            <h1>Your Profile</h1>
-            <p>Manage your account information</p>
+          <h1>Your Profile</h1>
+          <p>Manage your account information</p>
         </div>
 
         <div class="profile-content">
-            <div class="profile-card">
-                <div class="profile-avatar">
-                    <span th:text="${#strings.substring(session.user.name, 0, 1)}">U</span>
-                </div>
-                <div class="profile-info">
-                    <h2 th:text="${session.user.name}">User Name</h2>
-                    <p><strong>Email:</strong> <span th:text="${session.user.email}">user@example.com</span></p>
-                    <p><strong>Role:</strong> <span th:text="${#strings.capitalize(session.user.role)}">Role</span></p>
-                    <p th:if="${session.user.role == 'student'}"><strong>License Type:</strong> <span th:text="${session.user.licenseType}">License Type</span></p>
-                    <p th:if="${session.user.role == 'instructor'}"><strong>Experience:</strong> <span th:text="${session.user.experienceYears}">0</span> years</p>
-                </div>
+          <div class="profile-card">
+            <div class="profile-avatar">
+              <span th:text="${#strings.substring(session.user.name, 0, 1)}"
+                >U</span
+              >
             </div>
+            <div class="profile-info">
+              <h2 th:text="${session.user.name}">User Name</h2>
+              <p>
+                <strong>Email:</strong>
+                <span th:text="${session.user.email}">user@example.com</span>
+              </p>
+              <p>
+                <strong>Role:</strong>
+                <span th:text="${#strings.capitalize(session.user.role)}"
+                  >Role</span
+                >
+              </p>
+              <!-- Use model attribute for license type -->
+              <p th:if="${session.user.role == 'student'}">
+                <strong>License Type:</strong>
+                <span th:text="${licenseType}">License Type</span>
+              </p>
+              <!-- Use model attribute for experience years -->
+              <p th:if="${session.user.role == 'instructor'}">
+                <strong>Experience:</strong>
+                <span th:text="${experienceYears}">0</span> years
+              </p>
+            </div>
+          </div>
 
-            <div class="update-profile">
-                <h3>Update Your Information</h3>
-                <form th:action="@{/users/update}" method="post" class="profile-form">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" th:value="${session.user.name}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" th:value="${session.user.email}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">New Password</label>
-                        <input type="password" id="password" name="password" placeholder="Enter new password to change">
-                    </div>
+          <div class="update-profile">
+            <h3>Update Your Information</h3>
+            <form
+              th:action="@{/users/update}"
+              method="post"
+              class="profile-form"
+            >
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  th:value="${session.user.name}"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  th:value="${session.user.email}"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="password">New Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Enter new password to change"
+                />
+              </div>
 
-                    <!-- Student-specific fields -->
-                    <div class="form-group" th:if="${session.user.role == 'student'}">
-                        <label for="licenseType">License Type</label>
-                        <select id="licenseType" name="licenseType">
-                            <option value="Learner's Permit" th:selected="${session.user.licenseType == 'Learner\'s Permit'}">Learner's Permit</option>
-                            <option value="Provisional License" th:selected="${session.user.licenseType == 'Provisional License'}">Provisional License</option>
-                            <option value="Full License" th:selected="${session.user.licenseType == 'Full License'}">Full License</option>
-                            <option value="Commercial" th:selected="${session.user.licenseType == 'Commercial'}">Commercial</option>
-                        </select>
-                    </div>
+              <!-- Student-specific fields -->
+              <div class="form-group" th:if="${session.user.role == 'student'}">
+                <label for="licenseType">License Type</label>
+                <select id="licenseType" name="licenseType">
+                  <option
+                    value="Learner's Permit"
+                    th:selected="${licenseType == 'Learner''s Permit'}"
+                  >
+                    Learner's Permit
+                  </option>
+                  <option
+                    value="Provisional License"
+                    th:selected="${licenseType == 'Provisional License'}"
+                  >
+                    Provisional License
+                  </option>
+                  <option
+                    value="Full License"
+                    th:selected="${licenseType == 'Full License'}"
+                  >
+                    Full License
+                  </option>
+                  <option
+                    value="Commercial"
+                    th:selected="${licenseType == 'Commercial'}"
+                  >
+                    Commercial
+                  </option>
+                </select>
+              </div>
 
-                    <!-- Instructor-specific fields -->
-                    <div class="form-group" th:if="${session.user.role == 'instructor'}">
-                        <label for="experienceYears">Years of Experience</label>
-                        <input type="number" id="experienceYears" name="experienceYears" th:value="${session.user.experienceYears}" min="0">
-                    </div>
+              <!-- Instructor-specific fields -->
+              <div
+                class="form-group"
+                th:if="${session.user.role == 'instructor'}"
+              >
+                <label for="experienceYears">Years of Experience</label>
+                <input
+                  type="number"
+                  id="experienceYears"
+                  name="experienceYears"
+                  th:value="${experienceYears}"
+                  min="0"
+                />
+              </div>
 
-                    <div class="form-buttons">
-                        <button type="submit" class="btn btn-primary">Update Profile</button>
-                    </div>
+              <div class="form-buttons">
+                <button type="submit" class="btn btn-primary">
+                  Update Profile
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div class="danger-zone">
+            <h3>Danger Zone</h3>
+            <p>
+              Permanently delete your account and all associated data. This
+              action cannot be undone.
+            </p>
+            <button id="deleteAccountBtn" class="btn btn-danger">
+              Delete Account
+            </button>
+
+            <!-- Delete Account Confirmation Modal -->
+            <div id="deleteModal" class="modal">
+              <div class="modal-content">
+                <span class="close">&times;</span>
+                <h4>Confirm Account Deletion</h4>
+                <p>
+                  Are you sure you want to delete your account? This action
+                  cannot be undone.
+                </p>
+                <form th:action="@{/users/delete}" method="post">
+                  <input
+                    type="hidden"
+                    name="email"
+                    th:value="${session.user.email}"
+                  />
+                  <div class="modal-buttons">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      id="cancelDelete"
+                    >
+                      Cancel
+                    </button>
+                    <button type="submit" class="btn btn-danger">
+                      Delete Permanently
+                    </button>
+                  </div>
                 </form>
+              </div>
             </div>
-
-            <div class="danger-zone">
-                <h3>Danger Zone</h3>
-                <p>Permanently delete your account and all associated data. This action cannot be undone.</p>
-                <button id="deleteAccountBtn" class="btn btn-danger">Delete Account</button>
-
-                <!-- Delete Account Confirmation Modal -->
-                <div id="deleteModal" class="modal">
-                    <div class="modal-content">
-                        <span class="close">&times;</span>
-                        <h4>Confirm Account Deletion</h4>
-                        <p>Are you sure you want to delete your account? This action cannot be undone.</p>
-                        <form th:action="@{/users/delete}" method="post">
-                            <input type="hidden" name="email" th:value="${session.user.email}">
-                            <div class="modal-buttons">
-                                <button type="button" class="btn btn-secondary" id="cancelDelete">Cancel</button>
-                                <button type="submit" class="btn btn-danger">Delete Permanently</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-    </div>
-</section>
+      </div>
+    </section>
 
-<!-- Footer -->
-<footer class="footer">
-    <div class="container">
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
         <div class="footer-content">
-            <div class="footer-column">
-                <div class="footer-logo">
-                    <img th:src="@{/images/logo-footer.png}" alt="DriveSuccess Logo">
-                    <h3>DriveSuccess<span>Academy</span></h3>
-                </div>
-                <p>We've been helping people become safe, confident drivers since 2005.</p>
+          <div class="footer-column">
+            <div class="footer-logo">
+              <img th:src="@{/images/logo.png}" alt="DriveSuccess Logo" />
+              <h3>DriveSuccess<span>Academy</span></h3>
             </div>
-            <div class="footer-column">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a th:href="@{/}">Home</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a th:href="@{/courses}">Courses</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h3>Contact Us</h3>
-                <ul class="contact-info">
-                    <li><i class="fas fa-map-marker-alt"></i> 123 Driving Street, City, ST 12345</li>
-                    <li><i class="fas fa-phone"></i> (555) 123-4567</li>
-                </ul>
-            </div>
+            <p>
+              We've been helping people become safe, confident drivers since
+              2005.
+            </p>
+          </div>
+          <div class="footer-column">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a th:href="@{/}">Home</a></li>
+              <li><a href="#">About Us</a></li>
+              <li><a th:href="@{/courses}">Courses</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h3>Contact Us</h3>
+            <ul class="contact-info">
+              <li>
+                <i class="fas fa-map-marker-alt"></i> 123 Driving Street, City,
+                ST 12345
+              </li>
+              <li><i class="fas fa-phone"></i> (555) 123-4567</li>
+            </ul>
+          </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 DriveSuccess Academy. All rights reserved.</p>
+          <p>&copy; 2025 DriveSuccess Academy. All rights reserved.</p>
         </div>
-    </div>
-</footer>
+      </div>
+    </footer>
 
-<script>
-    // Modal functionality for delete account
-    document.addEventListener('DOMContentLoaded', function() {
-      const modal = document.getElementById('deleteModal');
-      const deleteBtn = document.getElementById('deleteAccountBtn');
-      const closeBtn = document.querySelector('.close');
-      const cancelBtn = document.getElementById('cancelDelete');
+    <script>
+      // Modal functionality for delete account
+      document.addEventListener("DOMContentLoaded", function () {
+        const modal = document.getElementById("deleteModal");
+        const deleteBtn = document.getElementById("deleteAccountBtn");
+        const closeBtn = document.querySelector(".close");
+        const cancelBtn = document.getElementById("cancelDelete");
 
-      deleteBtn.addEventListener('click', function() {
-        modal.style.display = 'block';
-      });
-
-      closeBtn.addEventListener('click', function() {
-        modal.style.display = 'none';
-      });
-
-      cancelBtn.addEventListener('click', function() {
-        modal.style.display = 'none';
-      });
-
-      window.addEventListener('click', function(event) {
-        if (event.target === modal) {
-          modal.style.display = 'none';
-        }
-      });
-
-      // User menu dropdown
-      const userButton = document.querySelector('.user-button');
-      const dropdownMenu = document.querySelector('.dropdown-menu');
-
-      if (userButton) {
-        userButton.addEventListener('click', function() {
-          dropdownMenu.classList.toggle('show');
+        deleteBtn.addEventListener("click", function () {
+          modal.style.display = "block";
         });
 
-        window.addEventListener('click', function(e) {
-          if (!e.target.matches('.user-button') && !e.target.closest('.user-button')) {
-            if (dropdownMenu.classList.contains('show')) {
-              dropdownMenu.classList.remove('show');
-            }
+        closeBtn.addEventListener("click", function () {
+          modal.style.display = "none";
+        });
+
+        cancelBtn.addEventListener("click", function () {
+          modal.style.display = "none";
+        });
+
+        window.addEventListener("click", function (event) {
+          if (event.target === modal) {
+            modal.style.display = "none";
           }
         });
-      }
 
-      // Mobile nav toggle
-      const navToggle = document.getElementById('navToggle');
-      const navLinks = document.getElementById('navLinks');
+        // User menu dropdown
+        const userButton = document.querySelector(".user-button");
+        const dropdownMenu = document.querySelector(".dropdown-menu");
 
-      if (navToggle) {
-        navToggle.addEventListener('click', function() {
-          navLinks.classList.toggle('show');
-        });
-      }
-    });
-</script>
-</body>
+        if (userButton) {
+          userButton.addEventListener("click", function () {
+            dropdownMenu.classList.toggle("show");
+          });
+
+          window.addEventListener("click", function (e) {
+            if (
+              !e.target.matches(".user-button") &&
+              !e.target.closest(".user-button")
+            ) {
+              if (dropdownMenu.classList.contains("show")) {
+                dropdownMenu.classList.remove("show");
+              }
+            }
+          });
+        }
+
+        // Mobile nav toggle
+        const navToggle = document.getElementById("navToggle");
+        const navLinks = document.getElementById("navLinks");
+
+        if (navToggle) {
+          navToggle.addEventListener("click", function () {
+            navLinks.classList.toggle("show");
+          });
+        }
+      });
+    </script>
+    <script th:src="@{/js/script.js}"></script>
+  </body>
 </html>
