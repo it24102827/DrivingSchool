@@ -1,0 +1,295 @@
+
+.lessons-container {
+    padding: 3rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+}
+
+.lessons-title {
+    font-size: 2.5rem;
+    color: #1e3a8a;
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.lessons-title:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: #3498db;
+    border-radius: 2px;
+}
+
+.lessons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.lesson-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    padding: 1.8rem;
+    border-top: 5px solid #3498db;
+    position: relative;
+    overflow: hidden;
+}
+
+.lesson-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.lesson-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    background: #f0f8ff;
+    border-radius: 0 0 0 50px;
+    z-index: 0;
+}
+
+.lesson-name {
+    color: #1e3a8a;
+    margin-bottom: 10px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+}
+
+.lesson-type {
+    display: inline-block;
+    background-color: #f0f8ff;
+    color: #3498db;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.lesson-instructor {
+    color: #555;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lesson-instructor::before {
+    content: '\f007';
+    font-family: 'Font Awesome 5 Free';
+    color: #777;
+}
+
+.lesson-description {
+    color: #444;
+    margin-bottom: 1.2rem;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.lesson-meta {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lesson-meta:nth-of-type(1)::before {
+    content: '\f017';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    color: #777;
+}
+
+.lesson-meta:nth-of-type(2)::before {
+    content: '\f073';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    color: #777;
+}
+
+.book-button {
+    display: block;
+    background-color: #3498db;
+    color: white;
+    padding: 0.9rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    font-weight: 600;
+    margin-top: 1.2rem;
+}
+
+.book-button:hover {
+    background-color: #2980b9;
+}
+
+/* Modal enhancements */
+.booking-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 25px;
+    border: none;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content h3 {
+    color: #1e3a8a;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    text-align: center;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f4f8;
+}
+
+.close-modal {
+    color: #aaa;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.close-modal:hover {
+    color: #1e3a8a;
+    background-color: #f0f4f8;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #444;
+    font-size: 0.95rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e1e8ed;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    background-color: #f9fbfd;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+}
+
+#confirmBooking {
+    background-color: #3498db;
+    color: white;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    width: 100%;
+}
+
+#confirmBooking:hover {
+    background-color: #2980b9;
+}
+
+/* Driving School Specific Elements */
+.lessons-container {
+    padding: 3rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .lessons-container {
+        padding: 2rem 1rem;
+    }
+    
+    .lessons-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 15% auto;
+        padding: 20px;
+    }
+    
+    .lessons-title {
+        font-size: 2rem;
+    }
+}
+
+/* Driving themed decorative elements */
+.lessons-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background: repeating-linear-gradient(
+        90deg,
+        #fff,
+        #fff 20px,
+        #ffcc00 20px,
+        #ffcc00 40px
+    );
+    z-index: 5;
+}

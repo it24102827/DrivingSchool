@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Available Lessons - DriveSuccess Academy</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
+    <link rel="stylesheet" th:href="@{/css/lessons.css}" />
+    <style>
+      /* Modal Styles */
+      .booking-modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 500px;
+        border-radius: 8px;
+        position: relative;
+      }
+
+      .close-modal {
+        color: #aaa;
+        position: absolute;
+        right: 20px;
+        top: 10px;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .close-modal:hover {
+        color: black;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      #confirmBooking {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100%;
+      }
+
+      #confirmBooking:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="logo">
+          <img th:src="@{/images/logo.png}" alt="DriveSuccess Logo" />
+          <h1>DriveSuccess<span>Academy</span></h1>
+        </div>
+        <div class="nav-toggle" id="navToggle">
+          <i class="fas fa-bars"></i>
+        </div>
+        <div class="nav-links" id="navLinks">
+          <a th:href="@{/}" class="active">Home</a>
+          <a th:href="@{/lessons/student}">Courses</a>
+          <a href="#">Instructors</a>
+          <a href="/feedback">Testimonials</a>
+          <a th:href="@{/contact}">Contact</a>
+
+          <div class="auth-buttons">
+            <div th:if="${session.user}" class="user-menu" id="userMenu">
+              <button class="user-button">
+                <span
+                  class="user-initial"
+                  th:text="${#strings.substring(session.user.name, 0, 1)}"
+                  >U</span
+                >
+                <span class="user-name" th:text="${session.user.name}"
+                  >User</span
+                >
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="dropdown-menu">
+                <a th:href="@{/profile}">
+                  <i class="fas fa-user"></i> Profile
+                </a>
+                <a
+                  th:if="${session.user.role == 'student'}"
+                  th:href="@{/lessons/student}"
+                >
+                  <i class="fas fa-calendar-plus"></i> Book Lesson
+                </a>
+                <a
+                  th:if="${session.user.role == 'student'}"
+                  th:href="@{/schedules/my}"
+                >
+                  <i class="fas fa-calendar-check"></i> My Bookings
+                </a>
+                <a
+                  th:if="${session.user.role == 'instructor'}"
+                  th:href="@{/schedule}"
+                >
+                  <i class="fas fa-calendar"></i> My Schedule
+                </a>
+                <a th:href="@{/feedback/my}" class="active">
+                  <i class="fas fa-comment-dots"></i> My Feedbacks
+                </a>
+                <a th:href="@{/users/logout}" class="logout">
+                  <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+              </div>
+            </div>
+            <div th:unless="${session.user}">
+              <a th:href="@{/users/login}" class="btn btn-login">Login</a>
+              <a th:href="@{/users/register}" class="btn btn-register"
+                >Register</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="lessons-container">
+      <h2 class="lessons-title">Available Lessons</h2>
+
+      <div class="lessons-grid">
+        <div th:each="lesson : ${lessons}" class="lesson-card">
+          <h4 class="lesson-name" th:text="${lesson.lessonName}">
+            Lesson Name
+          </h4>
+          <h5 class="lesson-type" th:text="${lesson.lessonType}">
+            Lesson Type
+          </h5>
+          <h6
+            class="lesson-instructor"
+            th:text="'Instructor: ' + ${lesson.instructorName}"
+          >
+            Instructor Name
+          </h6>
+          <p class="lesson-description" th:text="${lesson.description}">
+            Description
+          </p>
+          <p class="lesson-meta">
+            <span
+              th:text="'Duration: ' + ${lesson.duration} + ' minutes'"
+            ></span>
+          </p>
+          <p class="lesson-meta">
+            <span
+              th:text="'Created: ' + ${#temporals.format(lesson.createdAt, 'dd-MM-yyyy HH:mm')}"
+            ></span>
+          </p>
+          <a
+            th:href="@{/lessons/book/{id}(id=${lesson.id})}"
+            class="book-button"
+            th:attr="data-lesson-id=${lesson.id}"
+          >
+            Book This Lesson
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="booking-modal">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h3>Book This Lesson</h3>
+        <div class="form-group">
+          <label for="bookingDateTime">Select Date and Time:</label>
+          <input type="datetime-local" id="bookingDateTime" required />
+        </div>
+        <button id="confirmBooking" class="btn btn-primary">
+          Confirm Booking
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-column">
+            <div class="footer-logo">
+              <img th:src="@{/images/logo.png}" alt="DriveSuccess Logo" />
+              <h3>DriveSuccess<span>Academy</span></h3>
+            </div>
+            <p>
+              We've been helping people become safe, confident drivers since
+              2005.
+            </p>
+          </div>
+          <div class="footer-column">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a th:href="@{/}">Home</a></li>
+              <li><a href="#">About Us</a></li>
+              <li><a th:href="@{/courses}">Courses</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h3>Contact Us</h3>
+            <ul class="contact-info">
+              <li>
+                <i class="fas fa-map-marker-alt"></i> 123 Driving Street, City,
+                ST 12345
+              </li>
+              <li><i class="fas fa-phone"></i> (555) 123-4567</li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 DriveSuccess Academy. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script th:src="@{/js/script.js}"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Modal elements
+        const modal = document.getElementById("bookingModal");
+        const closeBtn = document.querySelector(".close-modal");
+        const confirmBtn = document.getElementById("confirmBooking");
+        const dateTimeInput = document.getElementById("bookingDateTime");
+
+        // Set minimum date to today
+        const today = new Date();
+        const offset = today.getTimezoneOffset();
+        today.setMinutes(today.getMinutes() - offset);
+        dateTimeInput.min = today.toISOString().slice(0, 16);
+
+        // Current lesson ID variable
+        let currentLessonId = null;
+
+        // Handle book button clicks
+        document.querySelectorAll(".book-button").forEach((button) => {
+          button.addEventListener("click", function (e) {
+            e.preventDefault();
+            currentLessonId = this.getAttribute("data-lesson-id");
+            modal.style.display = "block";
+          });
+        });
+
+        // Close modal
+        closeBtn.addEventListener("click", function () {
+          modal.style.display = "none";
+        });
+
+        // Confirm booking
+        confirmBtn.addEventListener("click", function () {
+          const selectedDateTime = dateTimeInput.value;
+
+          if (!selectedDateTime) {
+            alert("Please select a date and time");
+            return;
+          }
+
+          bookLesson(currentLessonId, selectedDateTime);
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener("click", function (e) {
+          if (e.target === modal) {
+            modal.style.display = "none";
+          }
+        });
+
+        function bookLesson(lessonId, scheduledAt) {
+          fetch("/schedules/book", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: `lessonId=${encodeURIComponent(
+              lessonId
+            )}&scheduledAt=${encodeURIComponent(scheduledAt)}`,
+          })
+            .then((response) => {
+              if (!response.ok) {
+                return response.text().then((text) => {
+                  throw new Error(text);
+                });
+              }
+              return response.text();
+            })
+            .then((message) => {
+              alert(message);
+              modal.style.display = "none";
+              window.location.reload();
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("Booking failed: " + error.message);
+            });
+        }
+      });
+    </script>
+  </body>
+</html>

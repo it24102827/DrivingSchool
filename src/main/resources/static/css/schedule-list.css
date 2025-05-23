@@ -1,0 +1,234 @@
+/* Schedule List Styles */
+.schedule-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.schedule-title {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+    font-size: 2.2rem;
+}
+
+.schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+.schedule-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    transition: transform 0.2s ease;
+}
+
+.schedule-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.schedule-card.cancelled {
+    opacity: 0.7;
+    background-color: #f8f9fa;
+}
+
+.schedule-card.cancelled .schedule-status {
+    color: #dc3545;
+}
+
+.schedule-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.schedule-header h3 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 1.2rem;
+}
+
+.schedule-status {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.schedule-status:not(.cancelled) {
+    color: #28a745;
+    background-color: rgba(40, 167, 69, 0.1);
+}
+
+.schedule-details {
+    margin-bottom: 1.5rem;
+}
+
+.schedule-details p {
+    margin: 0.75rem 0;
+    color: #555;
+    display: flex;
+    align-items: center;
+}
+
+.schedule-details i {
+    margin-right: 0.5rem;
+    color: #3498db;
+    width: 1.25rem;
+    text-align: center;
+}
+
+.schedule-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+/* Fixed button styling to ensure consistent sizes */
+.btn-action {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex: 1;
+    text-decoration: none;
+    text-align: center;
+    box-sizing: border-box;
+    min-width: 0;
+    width: 100%;
+}
+
+.btn-action i {
+    margin-right: 5px;
+}
+
+.btn-edit {
+    background-color: #3498db;
+    color: white;
+}
+
+.btn-edit:hover {
+    background-color: #2980b9;
+}
+
+.btn-cancel {
+    background-color: #f39c12;
+    color: white;
+}
+
+.btn-cancel:hover {
+    background-color: #e67e22;
+}
+
+.btn-delete {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #c0392b;
+}
+
+/* Fix form styling to ensure it takes equal space */
+.action-form {
+    flex: 1;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.no-schedules {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    color: #6c757d;
+}
+
+.no-schedules i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #adb5bd;
+}
+
+.no-schedules p {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+  
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+}
+  
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+  
+.close:hover {
+    color: black;
+}
+  
+.form-group {
+    margin-bottom: 15px;
+}
+  
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+  
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+  
+.btn-submit {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+  
+.btn-submit:hover {
+    background-color: #45a049;
+}
